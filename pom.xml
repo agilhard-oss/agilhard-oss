@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>agilhard-oss</artifactId>
+  <groupId>net.agilhard</groupId>
+  <version>1.0-SNAPSHOT</version>
+  <name>Agilhard OSS Modules</name>
+  <description>Agilhard OSS Modules</description>
+  <inceptionYear>2018</inceptionYear>
+  <url>${site.base.url}/${project.artifactid}</url>
+  <packaging>pom</packaging>
+
+  <organization>
+    <name>Agilhard.net</name>
+    <url>http://www.agilhard.net</url>
+  </organization>
+
+  <developers>
+    <developer>
+      <email>bernd@bernd-eilers.net</email>
+      <name>Bernd Eilers</name>
+      <url>http://www.bernd-eilers.net</url>
+      <id>bei</id>
+    </developer>
+  </developers>
+
+  <properties>
+
+    <!-- the following properties must be defined in the user's .settings.xml and selected via a profile:
+
+      agilhard.service.domain = domain name suffix for agilhard services
+
+      scm.base.url        = url of the scm host (without repo name)
+
+      repo.id             = id of host to deploy the artifacts to
+      repo.snapshots.url  = url for snapshot artifacts
+      repo.releases.url   = url for release artifacts
+
+      site.id             = id of host to deploy the site docs to
+      site.base.url       = url for site docs host (without application name)
+
+      registry.id         = id of host to deploy the docker images to
+      registry.base.url   = url for docker registry
+
+    -->
+    <agilhard.service.domain>service.agilhard.net</agilhard.service.domain>
+    <scm.base.url>http://gitea.${agilhard.service.domain}</scm.base.url>
+    <repo.id>nexus3.${agilhard.service.domain}</repo.id>
+    <repo.releases.url>http://nexus3.${agilhard.service.domain}/content/repositories/agilhard_releases/</repo.releases.url>
+    <repo.snapshots.url>http://nexus3.${agilhard.service.domain}/content/repositories/agilhard_snapshots</repo.snapshots.url>
+    <site.id>docs.service.agilhard.net</site.id>
+    <site.base.url>http://docs.${agilhard.service.domain}</site.base.url>
+    <registry.id>docker-registry.service.agilhard.net</registry.id>
+    <registry.base.url>http://docker-registry.${agilhard.service.domain}</registry.base.url>
+
+
+    <!-- deployment Goal -->
+    <deployGoal>devel</deployGoal>
+
+    <!-- Versions for Reporting -->
+    <version.orgApacheMavenPlugins.mavenSitePlugin>3.5</version.orgApacheMavenPlugins.mavenSitePlugin>
+    <version.orgApacheMavenWagon>2.12</version.orgApacheMavenWagon>
+    <version.orgApacheMavenPlugins.mavenPluginPlugin>3.5</version.orgApacheMavenPlugins.mavenPluginPlugin>
+    <version.orgApacheMavenPlugins.mavenJavadocPlugin>2.10.4</version.orgApacheMavenPlugins.mavenJavadocPlugin>
+    <version.orgApacheMavenPlugins.mavenJxrPlugin>2.5</version.orgApacheMavenPlugins.mavenJxrPlugin>
+    <version.orgApacheMavenPlugins.mavenProjectInfoReportsPlugin>2.9</version.orgApacheMavenPlugins.mavenProjectInfoReportsPlugin>
+    <version.orgCodehauseMojo.versionsMavenPlugin>2.3</version.orgCodehauseMojo.versionsMavenPlugin>
+
+    <!-- agilhard modules version-->
+    <agilhard.modules.version>${project.version}</agilhard.modules.version>
+
+    <!-- Root Basedir Setting -->
+    <rootBasedir>${project.basedir}</rootBasedir>
+
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+    <dependency.locations.enabled>false</dependency.locations.enabled>
+
+  </properties>
+
+  <profiles>
+
+    <!-- there is a profile for each subdirectory here -->
+
+    <!-- BEGIN: profiles for building -->
+    <profile>
+      <id>align</id>
+      <activation>
+	      <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>align/agilhard-align-modules</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>fork</id>
+      <activation>
+	      <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>fork/jsch</module>
+        <module>fork/jsch-agent-proxy</module>
+        <module>fork/jzlib</module>
+        <module>fork/vfsjfilechooser2</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>gui</id>
+      <activation>
+	      <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>gui/agilhard-gui-betty</module>
+        <module>gui/agilhard-gui-fwk-swing</module>
+        <module>gui/agilhard-vt100-terminal-emulation-common</module>
+        <module>gui/agilhard-vt100-terminal-emulation-swing</module>
+      </modules>
+    </profile>
+
+    <profile>
+      <id>util</id>
+      <activation>
+	      <activeByDefault>true</activeByDefault>
+      </activation>
+      <modules>
+        <module>util/agilhard-jsch-vfs-util</module>
+        <module>util/agilhard-lib-pty</module>
+        <module>util/agilhard-vfs-bundle-provider</module>
+        <module>util/agilhard-vfs-misc-providers</module>
+      </modules>
+    </profile>
+
+    <!-- END: profiles for building -->
+
+  </profiles>
+  
+  <reporting>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-plugin-plugin</artifactId>
+        <version>${version.orgApacheMavenPlugins.mavenPluginPlugin}</version>
+        <configuration>
+          <requirements>
+            <maven>3.0</maven>
+          </requirements>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>${version.orgApacheMavenPlugins.mavenJavadocPlugin}</version>
+        <configuration>
+          <sourceFileExcludes>
+            <exclude>**/rmi/*.java</exclude>
+          </sourceFileExcludes>
+          <stylesheetfile>${rootBasedir}/src/site/resources/css/apidocs.css</stylesheetfile>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jxr-plugin</artifactId>
+        <version>${version.orgApacheMavenPlugins.mavenJxrPlugin}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-project-info-reports-plugin</artifactId>
+        <version>${version.orgApacheMavenPlugins.mavenProjectInfoReportsPlugin}</version>
+      </plugin>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>versions-maven-plugin</artifactId>
+        <version>${version.orgCodehauseMojo.versionsMavenPlugin}</version>
+        <reportSets>
+          <reportSet>
+            <id>versions</id>
+            <reports>
+              <report>dependency-updates-report</report>
+              <report>plugin-updates-report</report>
+              <report>property-updates-report</report>
+            </reports>
+          </reportSet>
+        </reportSets>
+      </plugin>
+    </plugins>
+  </reporting>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>${version.orgApacheMavenPlugins.mavenSitePlugin}</version>
+          <configuration>
+            <siteDirectory>${rootBasedir}/src/site</siteDirectory>
+          </configuration>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>${version.orgApacheMavenWagon}</version>
+            </dependency>
+          </dependencies>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
+
+  <distributionManagement>
+    <site>
+      <id>${site.id}</id>
+      <url>scp://${site.id}/agilhard-doc/agilhard-modules/${project.version}/</url>
+    </site>
+    <repository>
+      <id>${repo.id}</id>
+      <name>Release Repository</name>
+      <url>${repo.releases.url}</url>
+    </repository>
+    <snapshotRepository>
+      <id>${repo.id}</id>
+      <name>Snapshot Repository</name>
+      <url>${repo.snapshots.url}</url>
+      <uniqueVersion>false</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
+
+  <scm>
+    <developerConnection>scm:git:${scm.base.url}/agilhard-modules</developerConnection>
+  </scm>
+</project>
+

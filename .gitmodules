@@ -1,0 +1,39 @@
+[submodule "align/agilhard-align-modules"]
+	path = align/agilhard-align-modules
+	url = ssh://git@github.com:agilhard-oss/agilhard-align-modules.git
+[submodule "util/agilhard-lib-pty"]
+	path = util/agilhard-lib-pty
+	url = ssh://git@github.com:agilhard-oss/agilhard-lib-pty.git
+[submodule "util/agilhard-vfs-misc-providers"]
+	path = util/agilhard-vfs-misc-providers
+	url = ssh://git@github.com:agilhard-oss/agilhard-vfs-misc-providers.git
+[submodule "gui/agilhard-vt100-terminal-emulation-swing"]
+	path = gui/agilhard-vt100-terminal-emulation-swing
+	url = ssh://git@github.com:agilhard-oss/agilhard-vt100-terminal-emulation-swing.git
+[submodule "gui/agilhard-gui-fwk-swing"]
+	path = gui/agilhard-gui-fwk-swing
+	url = ssh://git@github.com:agilhard-oss/agilhard-gui-fwk-swing.git
+[submodule "gui/agilhard-gui-betty"]
+	path = gui/agilhard-gui-betty
+	url = ssh://git@github.com:agilhard-oss/agilhard-gui-betty.git
+[submodule "util/agilhard-vfs-bundle-provider"]
+	path = util/agilhard-vfs-bundle-provider
+	url = ssh://git@github.com:agilhard-oss/agilhard-vfs-bundle-provider
+[submodule "fork/jzlib"]
+	path = fork/jzlib
+	url = ssh://git@github.com:agilhard-oss/jzlib
+[submodule "fork/jsch"]
+	path = fork/jsch
+	url = ssh://git@github.com:agilhard-oss/jsch
+[submodule "fork/jsch-agent-proxy"]
+	path = fork/jsch-agent-proxy
+	url = ssh://git@github.com:agilhard-oss/jsch-agent-proxy
+[submodule "util/agilhard-jsch-vfs-util"]
+	path = util/agilhard-jsch-vfs-util
+	url = ssh://git@github.com:agilhard-oss/agilhard-jsch-vfs-util
+[submodule "fork/vfsjfilechooser2"]
+	path = fork/vfsjfilechooser2
+	url = ssh://git@github.com:agilhard-oss/vfsjfilechooser2.git
+[submodule "gui/agilhard-vt100-terminal-emulation-common"]
+	path = gui/agilhard-vt100-terminal-emulation-common
+	url = ssh://git@github.com:agilhard-oss/agilhard-vt100-terminal-emulation-common.git

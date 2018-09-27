@@ -1,0 +1,85 @@
+#!/bin/sh
+# ======================================================================
+# ----------------------------------------------------------------------
+# cmd-all
+#
+# executes cmd for all directories of .gitmodules
+# 
+# ----------------------------------------------------------------------
+# ======================================================================
+##
+if [ $# -lt 1 ]; then 
+    echo "Usage: $0 [-s] <cmd> [command-args]"
+    echo " -s = silent mode"
+    exit -1;
+fi
+
+verbose=true
+
+if [ "$1" = "-s" ]; then
+    verbose=false
+    shift
+fi
+
+info() {
+    if [ "${verbose}" = "true" ]; then
+	echo $*
+    fi
+}
+
+
+error() {
+    >&2 echo $*
+}
+
+cmdline=""
+while [ $# -gt 0 ]; do
+  cmdline="$cmdline "'"'"$1"'"';
+  shift
+done
+
+# execute command in this directory
+sh -c "$cmdline"
+
+
+# Comments in this file define Subdirectores and GIT Repositories
+cp=.gitmodules
+
+# Search for directories
+projects=`egrep '^\[submodule' $cp | awk -F\" '{print $2}'`
+
+info "# ======================================================================"
+info "# cmd-all $cmdline"
+info "# ======================================================================"
+
+for project in $projects; do
+
+info "# ----------------------------------------------------------------------"
+info "# $project"
+info "# ----------------------------------------------------------------------"
+
+if [ ! -d $project ]; then
+ error "error directory not found $project"
+fi
+
+cd $project || exit -1
+
+if [ -f ./cmd-all ]; then
+
+# call cmd-all of subproject
+
+sh -c "./cmd-all $cmdline"
+
+else
+
+# Execute the command in subdirectory
+
+sh -c "$cmdline"
+
+fi
+
+cd ../..
+
+done
+
+info "# ======================================================================"

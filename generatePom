@@ -1,0 +1,101 @@
+#!/bin/sh
+# ======================================================================
+# ----------------------------------------------------------------------
+# generatePom
+#
+# generates the pom.xml file is ths directory new
+# based on content of .gitmodules
+# 
+# ----------------------------------------------------------------------
+# ======================================================================
+##
+
+echo "# ======================================================================"
+echo "# Re-Generating pom.xml"
+echo "# ======================================================================"
+p=pom.xml
+np=pom_new.xml
+awk '1;/BEGIN:/{exit}' $p >$np
+
+# Comments in this file define Subdirectores and GIT Repositories
+cp=.gitmodules
+
+dirs=`egrep '^\[submodule' $cp | awk -F\" '{print $2}' | awk -F/ '{print $1}' | sort|uniq`
+
+# Search for Projects
+#
+for dir in $dirs; do
+
+projects=`egrep '^\[submodule "'$dir"/" $cp | awk -F\" '{print $2}' | awk -F/ '{print $2}' | sort|uniq`
+
+echo "# ----------------------------------------------------------------------"
+echo "# Profile $dir"":"
+echo "# ----------------------------------------------------------------------"
+
+active="true"
+
+if [ "${dir}" = "incubator" ]; then
+    active="false"
+fi
+
+# Profile Header
+echo "    <profile>" >>$np
+echo "      <id>$dir</id>" >>$np
+echo "      <activation>" >>$np
+echo "	      <activeByDefault>${active}</activeByDefault>" >>$np
+echo "      </activation>" >>$np
+echo "      <modules>" >>$np
+
+for project in $projects; do
+
+if [ ! -d $dir/$project ]; then
+ echo "warning directory not found $dir/$project"
+fi
+
+if [ -f $dir/$project/pom.xml ]; then
+echo "# $dir/$project"
+
+# add Module to Profile
+echo "        <module>$dir/$project</module>" >> $np
+else
+echo "warning $dir/$project/pom.xml not found"
+fi
+
+done
+
+# Profile Footer
+
+echo "      </modules>" >>$np
+echo "    </profile>" >>$np
+echo >> $np
+
+done
+awk '/END:/,0' $p >> $np
+
+# move new pom to pom
+mv $np $p
+
+echo "# ======================================================================"
+
+for dir in $dirs; do
+
+# Search for Projects
+projects=`egrep '^\[submodule "'$dir"/" $cp | awk -F\" '{print $2}' | awk -F/ '{print $2}' | sort|uniq`
+
+for project in $projects; do
+
+if [ -f ${dir}/${project}/generatePom -a -f ${dir}/${project}/.gitmodules -a -f ${dir}/${project}/pom.xml ]; then
+
+echo "# ----------------------------------------------------------------------"
+echo "# ${dir}/${project}"
+echo "# ----------------------------------------------------------------------"
+
+wd=`pwd`
+cd ${dir}/${project}
+./generatePom
+cd $wd
+
+fi
+
+done
+done
